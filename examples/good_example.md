@@ -10,32 +10,27 @@ This is a reference report generated using the `decision-lens` framework with th
 
 ### 1.2 Initial Candidate Screening
 Scanned initial candidates via GitHub Topics `topic:database` [^1] and DB-Engines rankings [^2].
-
-| Candidate | Status | Notes |
-|-----------|--------|-------|
-| Apache Cassandra | **PASSED** | Meets write-throughput and scaling constraints [^3] |
-| MongoDB (SSPL) | **PASSED** | Open-core, document flexibility [^4] |
-| SQLite | **ELIMINATED** | Single-node architecture, fails horizontal scaling constraint [^5] |
+*(Note: Single-node databases like SQLite were silently excluded for failing Constraint 1).*
 
 ---
 
 ## 2. Domain Cognitive Map
 
 ### 2.1 One-Sentence Definition
-Selecting an optimal database architecture under high-throughput write workloads and strict availability requirements [^6].
+Selecting an optimal database architecture under high-throughput write workloads and strict availability requirements [^3].
 
 ### 2.2 Core Tension Model
 **Consistency vs. Availability (CAP Theorem)**
-Distributed databases must make explicit trade-offs between strong data consistency and high system availability during network partitions [^7].
+Distributed databases must make explicit trade-offs between strong data consistency and high system availability during network partitions [^4].
 
 ---
 
 ## 3. Deep-Dive Candidate Specifications
 
 ### Option A: Apache Cassandra
-- **Architecture**: Peer-to-peer ring topology with no single point of failure [^8].
-- **Customization & Setup**: Supports CQL interface, tuneable consistency levels per query [^9].
-- **Multi-Node Mechanics**: Automatic data sharding via consistent hashing [^10].
+- **Architecture**: Peer-to-peer ring topology with no single point of failure [^5].
+- **Customization & Setup**: Supports CQL interface, tuneable consistency levels per query [^6].
+- **Multi-Node Mechanics**: Automatic data sharding via consistent hashing [^7].
 
 ---
 
@@ -45,9 +40,9 @@ Distributed databases must make explicit trade-offs between strong data consiste
 
 | Factor | Cassandra | MongoDB |
 |--------|-----------|---------|
-| Overview | Distributed wide-column NoSQL [^8] | Document-oriented NoSQL [^4] |
-| Core Advantage | Exceptional write throughput [^3] | Flexible JSON schema [^11] |
-| Critical Flaw | Complex tombstone & compaction tuning [^12] | High operational cost for sharding [^13] |
+| Overview | Distributed wide-column NoSQL [^5] | Document-oriented NoSQL [^8] |
+| Core Advantage | Exceptional write throughput [^9] | Flexible JSON schema [^10] |
+| Critical Flaw | Complex tombstone & compaction tuning [^11] | High operational cost for sharding [^12] |
 
 ### 4.2 Transparent Weighted Scoring Matrix
 
@@ -68,16 +63,15 @@ Distributed databases must make explicit trade-offs between strong data consiste
 
 ## 6. References & Endnotes
 
-- [^1]: [GitHub Topic: Database](https://github.com/topics/database) - Primary open-source database topic listing.
-- [^2]: [DB-Engines Ranking](https://db-engines.com/en/ranking) - Official DBMS popularity and category index.
-- [^3]: [Apache Cassandra Architecture Docs](https://cassandra.apache.org/_/doc/latest/cassandra/architecture/) - Details on write path and ring topology.
-- [^4]: [MongoDB Licensing & Core Overview](https://www.mongodb.com/licensing/server-side-public-license) - SSPL open-core model details.
-- [^5]: [SQLite Design & Limits](https://www.sqlite.org/wabt.html) - Documentation confirming single-file architecture.
-- [^6]: [ACM SIGMOD Overview on Modern Storage Systems](https://dl.acm.org) - Database classification paper.
-- [^7]: [Brewer's CAP Theorem Proof (Lynch et al.)](https://glassbeam.com/wp-content/uploads/2017/04/Brewer-CAP-Theorem.pdf) - Formal CAP theorem paper.
-- [^8]: [Cassandra Ring Topology Paper (Facebook 2010)](https://www.cs.cornell.edu/projects/ladis2009/papers/lakshman-ladis2009.pdf) - Original Cassandra whitepaper.
-- [^9]: [Cassandra Query Language (CQL) Guide](https://cassandra.apache.org/doc/latest/cassandra/cql/) - Protocol specifications.
-- [^10]: [Consistent Hashing in Distributed Systems](https://dl.acm.org/doi/10.1145/258533.258660) - Consistent hashing paper.
-- [^11]: [MongoDB Document Model Manual](https://www.mongodb.com/docs/manual/core/document/) - Schema flexibility details.
-- [^12]: [Cassandra Compaction Pitfalls & Tombstone Issues](https://cassandra.apache.org/doc/latest/cassandra/operating/compaction/) - Official troubleshooting guide.
-- [^13]: [MongoDB Sharding Complexity & Operational Costs](https://www.mongodb.com/docs/manual/sharding/) - Production operational manual.
+[^1]: [GitHub Topic: Database](https://github.com/topics/database) - Primary open-source database topic listing.
+[^2]: [DB-Engines Ranking](https://db-engines.com/en/ranking) - Official DBMS popularity and category index.
+[^3]: [ACM SIGMOD Overview on Modern Storage Systems](https://dl.acm.org) - Database classification paper.
+[^4]: [Brewer's CAP Theorem Proof (Lynch et al.)](https://glassbeam.com/wp-content/uploads/2017/04/Brewer-CAP-Theorem.pdf) - Formal CAP theorem paper.
+[^5]: [Cassandra Ring Topology Paper (Facebook 2010)](https://www.cs.cornell.edu/projects/ladis2009/papers/lakshman-ladis2009.pdf) - Original Cassandra whitepaper.
+[^6]: [Cassandra Query Language (CQL) Guide](https://cassandra.apache.org/doc/latest/cassandra/cql/) - Protocol specifications.
+[^7]: [Consistent Hashing in Distributed Systems](https://dl.acm.org/doi/10.1145/258533.258660) - Consistent hashing paper.
+[^8]: [MongoDB Licensing & Core Overview](https://www.mongodb.com/licensing/server-side-public-license) - SSPL open-core model details.
+[^9]: [Apache Cassandra Architecture Docs](https://cassandra.apache.org/_/doc/latest/cassandra/architecture/) - Details on write path and ring topology.
+[^10]: [MongoDB Document Model Manual](https://www.mongodb.com/docs/manual/core/document/) - Schema flexibility details.
+[^11]: [Cassandra Compaction Pitfalls & Tombstone Issues](https://cassandra.apache.org/doc/latest/cassandra/operating/compaction/) - Official troubleshooting guide.
+[^12]: [MongoDB Sharding Complexity & Operational Costs](https://www.mongodb.com/docs/manual/sharding/) - Production operational manual.
