@@ -1,38 +1,38 @@
-# 示例：数据库选型决策支持
+# Example: Database Selection Decision Support
 
-这是 `area-decision-support` Skill 生成的报告示例。
+This is a reference report generated using the `decision-lens` Skill.
 
-## 1. 认知地图
+## 1. Domain Cognitive Map
 
-### 一句话定义
-在海量写入和高可用场景下选择合适的数据库系统。
+### One-Sentence Definition
+Selecting an optimal database architecture under high-throughput write workloads and strict availability requirements.
 
-### 核心张力模型
-**一致性 vs 可用性 (CAP定理)** 
-分布式数据库必须在数据强一致性和系统高可用性之间做出取舍。
+### Core Tension Model
+**Consistency vs. Availability (CAP Theorem)**
+Distributed databases must make explicit trade-offs between strong data consistency and high system availability during network partitions.
 
-### 关键变量与噪音
-- **关键变量**：写入吞吐量、扩展难度、一致性级别。
-- **营销噪音**：无服务器(Serverless)计费噱头。
+### Key Variables vs. Marketing Noise
+- **Key Variables**: Write throughput ceiling, partition tolerance, operational complexity, schema flexibility.
+- **Marketing Noise**: Serverless billing buzzwords.
 
-## 2. 方案矩阵
+## 2. Option Comparison Matrix
 
-| 维度 | Cassandra | MongoDB |
-|------|-----------|---------|
-| 简述 | 分布式宽列数据库 | 文档型 NoSQL |
-| 优势 | 极高的写入性能 | 灵活的 Schema |
-| 弱点 | 复杂的墓碑机制 | 分片运维成本高 |
-| 参考 | [官方](...) | [官方](...) |
+| Factor | Cassandra | MongoDB |
+|--------|-----------|---------|
+| Overview | Distributed wide-column NoSQL | Document-oriented NoSQL |
+| Core Advantage | Exceptional write throughput | Flexible JSON schema |
+| Critical Flaw | Complex tombstone & compaction tuning | High operational cost for sharding |
+| References | [Official Docs](https://cassandra.apache.org) | [Official Docs](https://www.mongodb.com) |
 
-## 3. 决策辅助
+## 3. Decision Assistance (Weighted Scoring)
 
-| 关键变量 | 权重 | 权重来源 | Cassandra | MongoDB |
-|----------|------|----------|-----------|---------|
-| 写入性能 | 50% | 需求说明 | 5 | 3 |
-| 易用性 | 30% | 团队规模 | 2 | 5 |
-| 事务支持 | 20% | 业务场景 | 1 | 4 |
-| **加权总分**| | | **3.3** | **3.8** |
+| Key Variable | Weight | Weight Origin | Cassandra | MongoDB |
+|--------------|--------|---------------|-----------|---------|
+| Write Throughput | 50% | User Spec | 5 | 3 |
+| Operational Ease | 30% | Team Size | 2 | 5 |
+| ACIDs / Transactions | 20% | Use Case | 1 | 4 |
+| **Weighted Score** | | | **3.3** | **3.8** |
 
-## 4. 决策提示
-- 如果极限吞吐量是唯一瓶颈，选 Cassandra。
-- 如果需要快速迭代且写入压力一般，选 MongoDB。
+## 4. Conditional Guidance
+- If extreme write throughput is the primary bottleneck → Choose Cassandra.
+- If rapid iteration and rich querying matter more under moderate write pressure → Choose MongoDB.

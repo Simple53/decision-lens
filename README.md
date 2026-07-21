@@ -1,62 +1,62 @@
-# Area Decision Support (领域决策支持 Skill)
+# Decision Lens (`decision-lens`)
 
-面向 AI Agent / LLM 的高级 Skill，专注于在陌生或复杂领域建立认知、收集高质量证据、识别核心变量并构建透明可计算的决策矩阵。
+> Advanced AI Agent / LLM Skill for deep domain research, evidence-based trade-off analysis, and transparent weighted scoring matrices without imposing biased recommendations.
 
-> **核心哲学**：Skill 的职责是构建“可验证、可调整、可复算”的决策信息，而不是代替用户输出一个最终答案。
-
----
-
-## 🌟 核心特色
-
-- **决策支持而非顾问推荐**：AI 不输出带有主观倾向的“推荐 A”，而是列出核心变量、证据覆盖率与可调权重矩阵，由用户自主完成取舍。
-- **零幻觉与强可信度**：建立信源五星分级制度（官方文档 > 独立评测 > 社区讨论 > 营销文案），严格避免伪造统计数据与虚假精度。
-- **透明化权重矩阵**：将决策变量拆解，明确标注权重来源（用户明确要求 / 场景推导 / 默认权重）。用户只需调整权重即可快速重新计算分值。
-- **自适应研究流程**：根据任务复杂度（Level 1 简单回答 ~ Level 4 完整复杂决策）动态裁剪研究深度，避免简单问题过度消耗上下文。
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[中文说明文档](zh/README.md)
 
 ---
 
-## 📂 目录结构
+## 🌟 Core Philosophy
+
+The fundamental duty of `decision-lens` is to construct **verifiable, adjustable, and reproducible** decision-support information, rather than making value judgments on behalf of the user.
+
+- **Decision Support Over Recommendation**: AI does not output a biased "I recommend Option A". Instead, it presents key variables, evidence coverage, conflict tables, and a transparent weighted scoring matrix for the user to make the final trade-off.
+- **Zero Hallucination**: Enforces a 5-tier evidence grading system (Official Docs > Independent Benchmarks > Verified Community Threads > Sponsored Content). Avoids fake statistics and misleading decimal precision.
+- **Transparent Weight Matrix**: Deconstructs decision variables with explicit weight origins (*User-specified* / *Scenario-derived* / *Default*). Users can tweak weights dynamically to recalculate rankings instantly.
+- **Adaptive Workflow**: Dynamically scales execution depth from Level 1 (quick factual answer) to Level 4 (full multi-variable decision report).
+
+---
+
+## 📂 Repository Structure
 
 ```text
-area-decision-support/
-├── SKILL.md                 # Agent 核心指令与动作规范
+decision-lens/
+├── SKILL.md                 # Core LLM Agent system instructions (English)
+├── README.md                # Main documentation (English)
 ├── resources/
-│   └── report_template.md  # 决策支持报告 Artifact 标准模板
-└── examples/
-    └── good_example.md     # 数据库选型场景的理论与范例参考 (Few-Shot)
+│   └── report_template.md  # Standardized decision report Artifact template
+├── examples/
+│   └── good_example.md     # Reference example (Database selection case study)
+└── zh/                      # Chinese documentation & resources
+    ├── README.md            # 中文说明文档
+    ├── SKILL.md            # 中文指令定义
+    ├── resources/
+    │   └── report_template.md
+    └── examples/
+        └── good_example.md
 ```
 
 ---
 
-## 🚀 安装与使用
+## 🚀 Installation & Setup
 
-### 在 Antigravity 中配置
-
-1. 将本仓库克隆或下载到本地指定目录（例如 `G:/onedrive/smallprjs/skills/area-decision-support`）。
-2. 在 Antigravity 全局配置目录（`~/.gemini/config/skills.json`）中注册该路径：
+Register the skill path in your AI Agent framework or Antigravity configuration (`~/.gemini/config/skills.json`):
 
 ```json
 {
   "entries": [
-    { "path": "path/to/your/skills" }
+    { "path": "path/to/decision-lens" }
   ]
 }
 ```
 
-3. 在对话中要求 Agent 针对某个领域进行深入研究、技术选型或方案对比时，系统将自动触发本 Skill。
-
 ---
 
-## 🛠 工作流阶段 (Workflow)
+## 🛠 Workflow Phases
 
-1. **Phase 1: 研究边界锁定** - 明确目标类型、约束条件与用户最关心的核心因素。
-2. **Phase 2: 领域认知地图** - 建立知识结构、提炼核心张力模型（矛盾点）与关键变量（排除营销噪音）。
-3. **Phase 3: 证据收集与冲突分析** - 进行定向检索，整理矛盾观点与证据支持，标注冲突与信息局限性。
-4. **Phase 4: 方案矩阵与加权评分** - 输出结构化对比矩阵，生成带权重透明度的定性打分表（1-5分）。
-5. **Phase 5: 决策交付** - 交付已知事实、待验证项、建议验证路径以及不同假设下的决策路径提示。
-
----
-
-## 📄 License
-
-[MIT License](LICENSE)
+1. **Phase 1: Research Scope Locking** – Confirm target goal, boundary constraints, and primary user concerns.
+2. **Phase 2: Domain Cognitive Map** – Map knowledge branches, identify core tension models, and filter key variables from marketing noise.
+3. **Phase 3: Evidence & Conflict Analysis** – Perform targeted web retrieval for pitfalls/benchmarks; structure conflicting views transparently.
+4. **Phase 4: Option Matrix & Weighted Scoring** – Build comparison matrices and qualitative 1–5 integer weighted scoring tables.
+5. **Phase 5: Decision Delivery** – Output verified facts, unresolved ambiguities, verification plans, and conditional decision prompts.
