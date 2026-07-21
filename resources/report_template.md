@@ -7,43 +7,43 @@
 - **Criterion 2**: [Description of mandatory requirement]
 
 ### 1.2 Dynamically Discovered Search Sources (User Approved)
-- **Source A**: [Reason for inclusion / Justification] [^1]
-- **Source B**: [Reason for inclusion / Justification] [^2]
+- **Source A**: [Reason for inclusion / Justification] [1]
+- **Source B**: [Reason for inclusion / Justification] [2]
 
-### 1.3 Unconstrained Candidate Discovery Pool (Full Scan Table)
+### 1.3 Downloadable Excel File (.xlsx)
+- 📊 **Excel Spreadsheet Export**: [Download Candidate & Matrix Excel File](file:///path/to/domain_research_candidates.xlsx) [3]
+
+### 1.4 Unconstrained Candidate Discovery Pool (Full Scan Table)
 
 | Candidate Name | Form Factor | Hard Constraint Status | Reason / Notes | Reference Link |
 |----------------|-------------|------------------------|----------------|----------------|
-| Project 1 | Desktop App | **PASSED** | Meets all Hard Constraints [^3] | [Source](https://valid-url.com) |
-| Project 2 | VS Code Plugin | **ELIMINATED** | Fails Criterion 1 [^4] | [Source](https://valid-url.com) |
-| Project 3 | CLI Tool | **ELIMINATED** | Fails Criterion 2 [^5] | [Source](https://valid-url.com) |
-| ... | ... | ... | ... | ... |
-
-*(Note: From the full candidate pool above, the Top 10–15 eligible projects have been selected for the main comparison matrix and deep-dive specifications below).*
+| Project 1 | Desktop App | **PASSED** | Meets all Hard Constraints [4] | [Source](https://exact-url.com) |
+| Project 2 | VS Code Plugin | **ELIMINATED** | Fails Criterion 1 [5] | [Source](https://exact-url.com) |
 
 ---
 
-## 2. Domain Cognitive Map
+## 2. Pyramid Domain Breakdown & Terminology Glossary
 
-### 2.1 One-Sentence Definition
-[Define the domain and its core problem space] [^6]
+### 2.1 Pyramid Domain Breakdown
+- 🔺 **Top Level (Goal)**: [Ultimate domain objective] [6]
+- 🔷 **Mid Level (Core Mechanisms & Categories)**:
+  - Category A: ... [7]
+  - Category B: ... [8]
+- 🔻 **Base Level (Infrastructure & Foundation)**:
+  - Tech Stack & Protocols: ... [9]
 
-### 2.2 Core Tension Model
-[Primary trade-offs, e.g., Performance vs. Cost] [^7]
-```mermaid
-graph TD
-  A[Core Objective] --> B(Option 1)
-  A --> C(Option 2)
-```
+### 2.2 Terminology Glossary (Domain Jargon & Acronyms)
+- **Term 1 (e.g. MCP)**: [Detailed definition and context] [10]
+- **Term 2 (e.g. VLM)**: [Detailed definition and context] [11]
 
 ---
 
-## 3. Top 10–15 Candidate Deep-Dive Specifications (Extracted via `read_url_content`)
+## 3. Top 10–15 Candidate Deep-Dive Specifications
 
 ### Candidate 1 Specification
-- **Architecture & Form Factor**: ... [^8]
-- **Custom/Free API Setup (DeepSeek/SiliconFlow/Ollama)**: ... [^9]
-- **Multi-Agent & Vision Mechanics**: ... [^10]
+- **Architecture & Form Factor**: ... [12]
+- **Custom/Free API Setup**: ... [13]
+- **Multi-Agent & Vision Mechanics**: ... [14]
 
 ---
 
@@ -53,15 +53,13 @@ graph TD
 
 | Factor | Candidate 1 | Candidate 2 | ... | Candidate 10–15 |
 |--------|-------------|-------------|-----|-----------------|
-| Overview | ... [^11] | ... [^12] | ... | ... |
-| Critical Flaw | ... [^13] | ... [^14] | ... | ... |
+| Overview | ... [15] | ... [16] | ... | ... |
 
 ### 4.2 Transparent Weighted Scoring Matrix
 
 | Key Variable | Weight | Weight Origin | Candidate 1 | Candidate 2 | ... | Candidate 10–15 |
 |--------------|--------|---------------|-------------|-------------|-----|-----------------|
 | Variable A | 30% | User Specified | 4 | 2 | ... | ... |
-| Variable B | 70% | Scenario Derived | 3 | 5 | ... | ... |
 | **Weighted Score** | | | **3.3** | **4.1** | ... | ... |
 
 ---
@@ -74,7 +72,7 @@ graph TD
 
 ## 6. References & Endnotes
 
-[^1]: [Discovered Platform A](https://valid-url.com) - Source discovery justification
-[^2]: [Discovered Platform B](https://valid-url.com) - Source discovery justification
-[^3]: [Official Project Docs](https://valid-url.com) - Candidate verification
-[^4]: [Academic / Benchmark Paper](https://valid-url.com) - Tension model proof
+[1] [Discovered Source A Title](https://exact-url.com/path) - Context description
+[2] [Discovered Source B Title](https://exact-url.com/path) - Context description
+[3] [Excel Spreadsheet File](file:///path/to/domain_research_candidates.xlsx) - Local downloadable Excel sheet
+[4] [Project 1 Official Site/Repo](https://github.com/org/repo) - Official documentation link
