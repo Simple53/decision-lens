@@ -1,206 +1,128 @@
 ---
-name: area-decision-support
-description: 深度领域研究与决策支持。当用户要求深度了解某个领域、进行技术选型、行业调研、产品对比评估、或需要系统性研究报告时触发此 Skill。AI 负责建立认知地图、收集证据、构建可调整的评分矩阵，由用户自主决策。
+name: decision-lens
+description: Deep domain research and decision support framework. Activates when the user requests tech stack selection, product comparison, industry research, or systematic trade-off analysis. Collects evidence, maps domain variables, and constructs transparent weighted scoring matrices without imposing biased recommendations.
 ---
 
-# 领域研究与决策支持工作流
+# Decision Lens Workflow
 
-## 核心定位
+## Core Philosophy
 
-**AI 负责：** 建立领域地图、搜集证据、识别关键变量、分析争议、整理方案矩阵、构建加权评分。
-
-**AI 默认不负责：** 推荐最佳方案、替用户做价值取舍。如果用户明确要求推荐，可以给出带理由的倾向性建议，但必须标注"这是基于当前证据的倾向性判断"。
-
----
-
-## 铁律
-
-1. **零幻觉**：所有事实性结论必须通过 `search_web` 或 `read_url_content` 获取并验证。每个关键结论附带来源链接 `[来源](URL)`。无法找到来源时标注"未经验证"。绝不捏造来源或统计数据。
-2. **Artifact 为主要载体**：创建 `domain_research_<主题>.md` 作为研究报告，随阶段推进追加更新。对话框只输出简要摘要和需要用户决策的问题。
-3. **信源质量分级**：
-
-| 等级 | 来源类型 |
-|------|----------|
-| ★★★★★ | 官方文档、官方标准、同行评议论文、标准组织 |
-| ★★★★☆ | 独立实验室评测、大型媒体评测、行业报告 |
-| ★★★☆☆ | GitHub Issues、Reddit、StackOverflow、知乎高赞 |
-| ★★☆☆☆ | 个人博客、论坛帖子 |
-| ★☆☆☆☆ | 营销文章、厂商白皮书（利益相关） |
-
-4. **时效性标注**：对关键信息标注发布/更新时间。技术领域信息衰减快，超过一年的对比需要特别标注。
-5. **评分诚实**：加权评分基于定性判断，使用粗粒度评级（高/中/低或 1-5 整数），不使用小数点伪精度。明确标注哪些评分有充分证据支持，哪些是推断。
+- **AI Role**: Construct domain maps, collect web evidence, identify key trade-off variables, compile option matrices, and build transparent weighted scoring matrices.
+- **Non-Goal**: AI does NOT dictate the "best" choice or make value judgments for the user. If the user explicitly asks for a recommendation, provide a guarded suggestion clearly labeled as *"tentative preference based on current evidence"*.
+- **Language Output**: Output user-facing messages and Artifacts in the user's preferred language (default to Chinese when communicating with Chinese users).
 
 ---
 
-## 自适应流程
+## Strict Rules
 
-不是所有请求都需要完整流程。根据复杂度选择执行深度：
+1. **Zero Hallucination**: Every factual claim must be backed by `search_web` or `read_url_content` with Markdown inline links `[Source Name](URL)`. Unverified claims MUST be explicitly tagged as `[Unverified]`. Never invent citations or fake statistics.
+2. **Artifact as Primary Medium**: Create `domain_research_<topic>.md` as a living report and append updates across workflow phases. Chat output must remain concise summaries and decision prompts.
+3. **Source Quality Tiering**:
 
-| 复杂度 | 场景 | 执行范围 |
-|--------|------|----------|
-| **Level 1** 事实解答 | 用户问一个具体事实 | 直接搜索回答，不建 Artifact |
-| **Level 2** 领域学习 | 用户想了解一个领域 | Phase 1-2（边界 + 地图） |
-| **Level 3** 方案比较 | 用户需要对比几个选项 | Phase 1-4（边界 + 地图 + 证据 + 矩阵） |
-| **Level 4** 复杂决策 | 用户面临多变量的重大决策 | Phase 1-5（完整流程） |
+| Tier | Source Types |
+|------|--------------|
+| ★★★★★ | Official Documentation, Official Specs/Standards, Peer-Reviewed Papers |
+| ★★★★☆ | Independent Lab Benchmarks, Major Tech Publications, Industry Reports |
+| ★★★☆☆ | GitHub Issues, Reddit, StackOverflow, Verified Community Threads |
+| ★★☆☆☆ | Personal Blogs, Discussion Forums |
+| ★☆☆☆☆ | Sponsored Content, Vendor Whitepapers (Conflict of Interest) |
 
-在对话开始时判断复杂度等级。如果不确定，先按 Level 2 执行，在过程中根据信息复杂度升级。
-
----
-
-## 搜索策略
-
-**必须搜索的内容**：最新信息、具体产品/软件/服务、价格、排名、法规政策、学术论文、官方文档、社区评价。
-
-**可直接回答的内容**：基础概念解释、通用原理、已被广泛接受的常识。
-
-搜索按需进行，不限定轮次。对高价值搜索结果使用 `read_url_content` 提取详细内容。
+4. **Recency Awareness**: Tag key data points with publication dates. Fast-evolving tech fields require explicit warnings if sources are older than 12 months.
+5. **Score Honesty**: Use qualitative integers (1–5 scale). Avoid misleading precision (e.g. no fake decimal precision like `8.14`).
 
 ---
 
-## Phase 1：研究边界锁定
+## Adaptive Workflow
 
-**目标**：明确研究的方向和约束，避免无效检索。
+Tailor execution depth based on task complexity:
 
-确认以下信息（若用户已在提问中给出则直接采用，不重复追问）：
-
-| 项目 | 说明 |
-|------|------|
-| 目标类型 | 学习 / 比较 / 决策 / 排错 |
-| 研究范围 | 需要研究什么，不需要研究什么 |
-| 约束条件 | 预算、地区、团队规模、技术栈等 |
-| 最关心因素 | 成本、安全、性能、可维护性…… |
-
-只问影响研究方向的关键问题，不做冗余追问。
+| Level | Scenario | Action Scope |
+|-------|----------|--------------|
+| **Level 1** | Single factual query | Answer directly with web search; skip Artifact |
+| **Level 2** | Domain exploration | Phase 1 & 2 (Scope + Map) |
+| **Level 3** | Multi-option comparison | Phase 1 to 4 (Scope + Map + Evidence + Matrix) |
+| **Level 4** | Complex multi-variable decision | Phase 1 to 5 (Full Workflow) |
 
 ---
 
-## Phase 2：领域认知地图
+## Search Strategy
 
-**目标**：建立该领域的结构化认知。
-
-使用 `search_web` 进行多角度扫描，创建 Artifact 并写入：
-
-### 2.1 一句话领域定义
-该领域是什么、解决什么问题。
-
-### 2.2 知识结构
-用树形结构或 Mermaid 图展示领域的主要分支和子领域。
-
-### 2.3 核心运转机制
-不是介绍概念，而是说明该领域**真正围绕哪些变量运转**。提炼该领域最根本的 1-2 个核心张力（如性能 vs 成本、灵活性 vs 安全性），以及主流方案在这些张力中的取舍。
-
-### 2.4 主要参与者
-关键的软件/平台/组织/标准/开源项目。
-
-### 2.5 关键变量识别
-提炼真正影响决策的核心变量（不超过 10 个）：
-
-| 变量 | 重要程度 | 为什么重要 | 适用范围 |
-|------|----------|------------|----------|
-
-同时指出哪些指标是**营销噪音**——看起来重要但实际影响有限。
-
-完成后在对话框汇报核心发现，引导用户明确偏好和约束。
+- **Must Search**: Live product pricing, benchmark metrics, regulations, papers, API docs, community complaints/pitfalls.
+- **Direct Answer Allowed**: Core principles, standard algorithms, widely accepted computer science fundamentals.
+- **Deep Extraction**: Use `read_url_content` for in-depth inspection of high-value search results.
 
 ---
 
-## Phase 3：证据收集与冲突分析
+## Phase 1: Research Scope Locking
 
-**目标**：围绕关键变量收集高质量证据，识别信息冲突。
+Confirm the following parameters before deep searching (skip asking if already specified by user):
 
-### 3.1 定向检索
-围绕 Phase 2 识别的关键变量进行深度搜索，重点关注：
-- 该场景下的真实案例和实践反馈
-- 独立评测数据和基准测试
-- 踩坑记录和失败案例
-- 各方案的隐性成本和极端情况
-
-### 3.2 证据记录
-对每条重要结论记录：来源、信源等级、发布时间、是否存在冲突信息。
-
-### 3.3 冲突整理
-当信息存在矛盾时，不下结论，只整理：
-
-| 问题 | 观点 A | 观点 B | 主要证据 | 目前共识 |
-|------|--------|--------|----------|----------|
-
-证据不足时明确标注"目前证据不足"。
-
-### 3.4 信息稀缺处理
-对于信息稀缺的领域，明确告知用户可用信息的局限性，必要时建议替代信息获取方式（联系厂商、申请试用、查阅付费报告等）。
+| Parameter | Description |
+|-----------|-------------|
+| Goal Type | Learning / Comparison / Decision / Troubleshooting |
+| Boundary | What to include vs. exclude |
+| Constraints | Budget, team size, legacy stack, region, security |
+| Core Focus | Cost, reliability, performance, maintainability |
 
 ---
 
-## Phase 4：方案矩阵与加权评分
+## Phase 2: Domain Cognitive Map
 
-**目标**：构建可调整的决策矩阵，让用户自主判断。
+Perform initial multi-angle searches and create/update Artifact with:
 
-### 4.1 方案矩阵
-
-| 维度 | 方案 A | 方案 B | 方案 C |
-|------|--------|--------|--------|
-| 简述 | ... | ... | ... |
-| 核心优势 | ... | ... | ... |
-| 致命弱点 | 基于真实案例 | 基于真实案例 | 基于真实案例 |
-| 隐性成本 | ... | ... | ... |
-| 成立前提 | ... | ... | ... |
-| 参考链接 | [链接](URL) | [链接](URL) | [链接](URL) |
-
-### 4.2 加权评分
-
-**注意**：以下评分为定性估计，基于收集到的证据进行粗粒度打分（1-5 整数），仅供辅助排序，不代表精确测量。
-
-#### 权重表（透明化）
-
-| 关键变量 | 权重 | 权重来源 |
-|----------|------|----------|
-| 成本 | 30% | 用户明确要求预算优先 |
-| 可靠性 | 25% | 用户强调长期稳定 |
-| 扩展性 | 15% | 根据使用场景推导 |
-| 学习成本 | 10% | 默认权重（用户未说明） |
-
-标注来源类型：**用户明确要求** / **场景推导** / **默认权重**。用户可调整权重后要求重新计算，无需重跑整个研究流程。
-
-#### 评分表
-
-| 关键变量 | 权重 | 方案 A | 方案 B | 方案 C |
-|----------|------|--------|--------|--------|
-| ... | ...% | 1-5 | 1-5 | 1-5 |
-| **加权总分** | | **x.x** | **x.x** | **x.x** |
+1. **One-Sentence Definition**: Core purpose of the domain.
+2. **Knowledge Tree**: Structural breakdown of sub-domains or technology branches.
+3. **Core Mechanism & Tension**: Identify the primary 1–2 tradeoffs (e.g., Performance vs. Cost, Flexibility vs. Safety) and how major paradigms choose their positioning.
+4. **Key Variables vs. Marketing Noise**:
+   - *Key Variables*: The <10 factors that actually determine success.
+   - *Marketing Noise*: Flashy features with negligible practical impact.
 
 ---
 
-## Phase 5：决策交付
+## Phase 3: Evidence & Conflict Analysis
 
-**目标**：输出结构化决策支持信息，交由用户判断。
+1. **Targeted Deep Retrieval**: Search for real-world failure cases, benchmark data, hidden costs, and edge cases.
+2. **Conflict Resolution Table**: If sources disagree, do not force a verdict. Present the conflict:
 
-### 5.1 已确认事实
-列出有充分证据支持的确定性信息。
+| Issue | View A | View B | Key Evidence | Current Consensus |
+|-------|--------|--------|--------------|-------------------|
 
-### 5.2 尚未确定
-哪些问题目前没有充分证据，影响程度如何。
-
-### 5.3 进一步验证建议
-
-| 需要验证的问题 | 建议验证方式 |
-|----------------|--------------|
-| ... | 查看长期测试 / 社区统计 / 厂商沟通 / 试用 |
-
-### 5.4 引用来源清单
-列出所有实际引用的来源，按信源等级分组。这是真实引用列表，不是统计数字。
-
-### 5.5 决策路径提示
-不输出"推荐 A"，而是：
-- 如果您最看重 X → 方案 A 在此维度表现最强，因为……
-- 如果您最担心 Y → 方案 B 的此项风险最低，因为……
-- 最终取舍取决于您如何权衡上述关键变量。
+3. **Information Scarcity**: If data is lacking, explicitly state "Insufficient verifiable evidence" and suggest alternative validation methods (e.g., vendor trial, hands-on benchmark).
 
 ---
 
-## 迭代入口
+## Phase 4: Option Matrix & Weighted Scoring
 
-完成后向用户提供：
-- 调整权重重新计算评分
-- 对某个方案深挖具体配置/价格/实施路径
-- 引入新约束条件重新评估
-- 对争议点做进一步调研
+### 4.1 Comparison Matrix
+
+| Factor | Option A | Option B | Option C |
+|--------|----------|----------|----------|
+| Overview | ... | ... | ... |
+| Core Advantage | ... | ... | ... |
+| Critical Flaw | Based on real cases | Based on real cases | Based on real cases |
+| Hidden Costs | ... | ... | ... |
+| Prerequisites | ... | ... | ... |
+| Sources | [Link](URL) | [Link](URL) | [Link](URL) |
+
+### 4.2 Transparent Weighted Scoring
+
+1. **Weight Table**: Explicitly tag weight origins (**User-specified** / **Scenario-derived** / **Default**).
+2. **Scoring Table**: Qualitative 1–5 scale per variable.
+
+```markdown
+Weighted Score = SUM(Score * Weight)
+```
+
+Users can request weight adjustments to dynamically recalculate scores without re-running searches.
+
+---
+
+## Phase 5: Decision Delivery
+
+Output structured decision-support Artifact sections:
+- **Verified Facts**: High-confidence takeaways.
+- **Unresolved Ambiguities**: Gaps requiring hands-on testing.
+- **Actionable Verification Plan**: Next steps to validate unresolved risks.
+- **Conditional Decision Guidance**:
+  - *If primary concern is X* → Option A is optimal because...
+  - *If risk Y must be avoided* → Option B is safer because...
