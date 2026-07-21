@@ -1,13 +1,13 @@
 ---
 name: decision-lens
-description: Deep domain research and decision support framework. Activates when the user requests tech stack selection, product comparison, industry research, or systematic trade-off analysis. Collects evidence, maps domain variables, and constructs transparent weighted scoring matrices without imposing biased recommendations.
+description: Deep domain research and decision support framework. Activates when the user requests tech stack selection, product comparison, industry research, or systematic trade-off analysis. Collects evidence, maps domain variables, enforces hard constraint filtering, and constructs transparent weighted scoring matrices with endnote citations.
 ---
 
 # Decision Lens Workflow
 
 ## Core Philosophy
 
-- **AI Role**: Construct domain maps, collect web evidence, identify key trade-off variables, compile option matrices, and build transparent weighted scoring matrices.
+- **AI Role**: Construct domain maps, perform broad scanning, enforce hard constraint filtering, collect web evidence with endnote citations, compile option matrices, build transparent weighted scoring matrices, and provide deep-dive technical cards.
 - **Non-Goal**: AI does NOT dictate the "best" choice or make value judgments for the user. If the user explicitly asks for a recommendation, provide a guarded suggestion clearly labeled as *"tentative preference based on current evidence"*.
 - **Language Output**: Output user-facing messages and Artifacts in the user's preferred language (default to Chinese when communicating with Chinese users).
 
@@ -15,114 +15,47 @@ description: Deep domain research and decision support framework. Activates when
 
 ## Strict Rules
 
-1. **Zero Hallucination**: Every factual claim must be backed by `search_web` or `read_url_content` with Markdown inline links `[Source Name](URL)`. Unverified claims MUST be explicitly tagged as `[Unverified]`. Never invent citations or fake statistics.
-2. **Artifact as Primary Medium**: Create `domain_research_<topic>.md` as a living report and append updates across workflow phases. Chat output must remain concise summaries and decision prompts.
-3. **Source Quality Tiering**:
-
-| Tier | Source Types |
-|------|--------------|
-| ★★★★★ | Official Documentation, Official Specs/Standards, Peer-Reviewed Papers |
-| ★★★★☆ | Independent Lab Benchmarks, Major Tech Publications, Industry Reports |
-| ★★★☆☆ | GitHub Issues, Reddit, StackOverflow, Verified Community Threads |
-| ★★☆☆☆ | Personal Blogs, Discussion Forums |
-| ★☆☆☆☆ | Sponsored Content, Vendor Whitepapers (Conflict of Interest) |
-
-4. **Recency Awareness**: Tag key data points with publication dates. Fast-evolving tech fields require explicit warnings if sources are older than 12 months.
-5. **Score Honesty**: Use qualitative integers (1–5 scale). Avoid misleading precision (e.g. no fake decimal precision like `8.14`).
-
----
-
-## Adaptive Workflow
-
-Tailor execution depth based on task complexity:
-
-| Level | Scenario | Action Scope |
-|-------|----------|--------------|
-| **Level 1** | Single factual query | Answer directly with web search; skip Artifact |
-| **Level 2** | Domain exploration | Phase 1 & 2 (Scope + Map) |
-| **Level 3** | Multi-option comparison | Phase 1 to 4 (Scope + Map + Evidence + Matrix) |
-| **Level 4** | Complex multi-variable decision | Phase 1 to 5 (Full Workflow) |
+1. **Hard Constraint Filtering (一票否决机制)**: Explicitly separate **Hard Constraints** (mandatory requirements like "must be a standalone desktop app") from **Soft Preferences** (weighted evaluation factors). Any candidate failing a Hard Constraint MUST be immediately eliminated during screening and cannot occupy a slot in the primary comparison matrix.
+2. **Broad & Multi-Source Scanning**:
+   - Do NOT rely on 1–2 surface-level web searches.
+   - Perform broad scans using GitHub Topics (e.g. `topic:ai-agent`), Awesome Lists (e.g. `awesome-ai-agents`), and community roundups.
+   - Build an initial candidate pool of at least 6–8 options before filtering down to the Top candidates for deep comparison.
+3. **Endnote Citation System (角标/尾注引用系统)**:
+   - Attach superscript citations `[^1]`, `[^2]` (or `[1]`, `[2]`) to all key claims, project features, metrics, and data points throughout the text—not just inside tables.
+   - Compile all numbered references at the end of the document in a dedicated `## References` section with full URLs, source names, and context.
+   - Never invent citations. Unverified claims MUST be explicitly tagged as `[Unverified]`.
+4. **Interactive Parameter & Weight Locking**:
+   - At Phase 1, present the extracted Hard Constraints, Key Variables, and default Weights to the user.
+   - Actively prompt the user: *"Here are the identified constraints and weights. Would you like to adjust any weights or add new constraints before I proceed with deep analysis?"*
+5. **Detailed Deep-Dive Cards**: For all primary candidates surviving Hard Filtering, provide detailed technical cards covering installation dependencies, custom/free API configuration steps (e.g., DeepSeek/SiliconFlow/Ollama), multi-agent mechanics, and community maintenance status.
+6. **Artifact as Primary Medium**: Create `domain_research_<topic>.md` as a living report and append updates across workflow phases. Chat output must remain concise summaries and decision prompts.
+7. **Score Honesty**: Use qualitative integers (1–5 scale). Avoid misleading decimal precision.
 
 ---
 
-## Search Strategy
+## Workflow Phases
 
-- **Must Search**: Live product pricing, benchmark metrics, regulations, papers, API docs, community complaints/pitfalls.
-- **Direct Answer Allowed**: Core principles, standard algorithms, widely accepted computer science fundamentals.
-- **Deep Extraction**: Use `read_url_content` for in-depth inspection of high-value search results.
+### Phase 1: Research Scope & Parameter Locking
+1. Extract **Hard Constraints** (mandatory criteria) and **Soft Preferences** (evaluation metrics).
+2. Present the Hard Constraints, Key Variables (<10 factors), and proposed Weights to the user.
+3. Prompt the user for confirmation or weight adjustments before proceeding.
 
----
+### Phase 2: Broad Scanning & Domain Map
+1. Scan GitHub Topics, Awesome Lists, and search engines to gather an initial pool of 6–8 candidate options.
+2. Apply Hard Constraint Filtering to eliminate ineligible options (list eliminated options and reasons briefly).
+3. Construct the Domain Map (Knowledge Tree, Core Tension Model, Key Variables vs Marketing Noise) in the Artifact. Attach inline superscripts `[^1]` for all factual assertions.
 
-## Phase 1: Research Scope Locking
+### Phase 3: Targeted Deep-Dive & Conflict Analysis
+1. Perform in-depth retrieval for the Top eligible candidates.
+2. Structure conflicting claims, edge cases, and hidden costs into a Conflict Resolution Table.
+3. Create a **Deep-Dive Specification Card** for each core candidate.
 
-Confirm the following parameters before deep searching (skip asking if already specified by user):
+### Phase 4: Option Matrix & Transparent Scoring Matrix
+1. Construct the Option Comparison Matrix.
+2. Construct the Transparent Weight Table (origin: *User-specified*, *Scenario-derived*, *Default*).
+3. Build the Qualitative 1–5 Weighted Scoring Matrix.
 
-| Parameter | Description |
-|-----------|-------------|
-| Goal Type | Learning / Comparison / Decision / Troubleshooting |
-| Boundary | What to include vs. exclude |
-| Constraints | Budget, team size, legacy stack, region, security |
-| Core Focus | Cost, reliability, performance, maintainability |
-
----
-
-## Phase 2: Domain Cognitive Map
-
-Perform initial multi-angle searches and create/update Artifact with:
-
-1. **One-Sentence Definition**: Core purpose of the domain.
-2. **Knowledge Tree**: Structural breakdown of sub-domains or technology branches.
-3. **Core Mechanism & Tension**: Identify the primary 1–2 tradeoffs (e.g., Performance vs. Cost, Flexibility vs. Safety) and how major paradigms choose their positioning.
-4. **Key Variables vs. Marketing Noise**:
-   - *Key Variables*: The <10 factors that actually determine success.
-   - *Marketing Noise*: Flashy features with negligible practical impact.
-
----
-
-## Phase 3: Evidence & Conflict Analysis
-
-1. **Targeted Deep Retrieval**: Search for real-world failure cases, benchmark data, hidden costs, and edge cases.
-2. **Conflict Resolution Table**: If sources disagree, do not force a verdict. Present the conflict:
-
-| Issue | View A | View B | Key Evidence | Current Consensus |
-|-------|--------|--------|--------------|-------------------|
-
-3. **Information Scarcity**: If data is lacking, explicitly state "Insufficient verifiable evidence" and suggest alternative validation methods (e.g., vendor trial, hands-on benchmark).
-
----
-
-## Phase 4: Option Matrix & Weighted Scoring
-
-### 4.1 Comparison Matrix
-
-| Factor | Option A | Option B | Option C |
-|--------|----------|----------|----------|
-| Overview | ... | ... | ... |
-| Core Advantage | ... | ... | ... |
-| Critical Flaw | Based on real cases | Based on real cases | Based on real cases |
-| Hidden Costs | ... | ... | ... |
-| Prerequisites | ... | ... | ... |
-| Sources | [Link](URL) | [Link](URL) | [Link](URL) |
-
-### 4.2 Transparent Weighted Scoring
-
-1. **Weight Table**: Explicitly tag weight origins (**User-specified** / **Scenario-derived** / **Default**).
-2. **Scoring Table**: Qualitative 1–5 scale per variable.
-
-```markdown
-Weighted Score = SUM(Score * Weight)
-```
-
-Users can request weight adjustments to dynamically recalculate scores without re-running searches.
-
----
-
-## Phase 5: Decision Delivery
-
-Output structured decision-support Artifact sections:
-- **Verified Facts**: High-confidence takeaways.
-- **Unresolved Ambiguities**: Gaps requiring hands-on testing.
-- **Actionable Verification Plan**: Next steps to validate unresolved risks.
-- **Conditional Decision Guidance**:
-  - *If primary concern is X* → Option A is optimal because...
-  - *If risk Y must be avoided* → Option B is safer because...
+### Phase 5: Decision Delivery & Reference List
+1. Output Verified Facts, Unresolved Ambiguities, and Actionable Verification Plans.
+2. Provide Conditional Decision Guidance (e.g., "If priority is X → Option A").
+3. Append the full **Numbered References List** (`## References`) at the very end of the document, mapping every superscript `[^N]` to its full URL and description.
