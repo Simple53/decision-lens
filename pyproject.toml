@@ -1,0 +1,19 @@
+[project]
+name = "decision-lens"
+version = "1.4.0"
+description = "Deep domain research and decision support framework with MetaScout tool discovery, HTML reports, editable PPT generation, and uv portability."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "pandas>=2.0.0",
+    "openpyxl>=3.1.0",
+    "python-pptx>=0.6.21",
+    "jinja2>=3.1.0"
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["scripts"]

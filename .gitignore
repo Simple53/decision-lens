@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+scratch/
+*.xlsx
+*.html
+*.pptx
+.DS_Store
