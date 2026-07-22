@@ -1,63 +1,93 @@
 ---
 name: decision-lens
-description: Deep domain research and decision support framework (V1.4.0 Enhanced). Integrates MetaScout autonomous tool/library discovery, zero-hallucination web search protocols, clickable inline citations [[1]](URL), 10 Core Factors deep dive, portable uv environment execution, auto-generation of downloadable Excel (.xlsx), interactive HTML web reports (.html), and editable PowerPoint presentations (.pptx). Strictly bans total scores or 1-N rankings.
+description: Host-agnostic deep domain research and decision support framework (V1.4.0 Protocol). Universal compatibility across Codex, Claude Code, OpenCode, Grok Build, Antigravity, and custom agent platforms. Features MetaScout dynamic tool discovery, permission auditing, isolated sandbox deployment, automatic rollback protocols, zero-hallucination web citations, 10 Core Factors deep dive, and integrated generation of Excel (.xlsx), Interactive HTML (.html), and Editable PowerPoint (.pptx) reports. Strictly prohibits total scores or 1-N rankings.
 ---
 
-# Decision Lens Workflow
+# Decision Lens Workflow (Host-Agnostic Protocol V1.4.0)
 
-## Core Philosophy
+## 1. Protocol Architecture & Host Abstraction
 
-- **AI Role**: 
-  1. **MetaScout Dynamic Tool Discovery**: Autonomously identify capability gaps (e.g., missing data parsers or document export tools), propose required libraries/tools via `ask_question`, and deploy via portable `uv` environments.
-  2. **Multi-Format Deliverables**: Generate not only Markdown Artifact reports, but also auto-build real downloadable **Excel spreadsheets (.xlsx)**, **Interactive HTML Web Reports (.html)**, and **Editable PowerPoint Presentations (.pptx)** via Python scripts.
-  3. **Zero-Hallucination & Neutrality**: Construct detailed breakdowns of ~10 Core Domain Factors, perform unconstrained candidate scanning, dynamically discover reliable sources via `search_web`, enforce hard constraint filtering, pause for interactive user approval, and provide structured trade-off analysis.
-- **Strictly No Recommendations**: The AI MUST NOT dictate a "best" choice, calculate total scores, or rank candidates. The goal is pure, objective decision support (mapping trade-offs).
-- **Portable Execution (`uv`)**: All Python scripts run via `uv` (e.g., `uv run python scripts/generate_report.py`) ensuring zero global environment pollution and seamless cross-platform execution.
+This Skill is built upon a **Host-Agnostic Protocol**, decoupling instructions from system-specific APIs. It natively runs across any agent ecosystem, including **Codex**, **Claude Code**, **OpenCode**, **Grok Build**, and **Antigravity**.
 
----
-
-## Strict Rules
-
-1. **MetaScout Autonomous Tool Discovery Protocol**:
-   - When encountering a capability gap (e.g., needing custom parsers, data models, or export engines like `python-pptx`, `jinja2`, `openpyxl`), the AI MUST NOT guess or hallucinate logic.
-   - Use `search_web` to search for appropriate Python packages/tools.
-   - Before executing/installing, **MUST call `ask_question`** to present the tool rationale and request explicit user authorization.
-   - Once authorized, run tools via portable `uv` environments in isolation.
-2. **Multi-Format Report Generation (Excel, HTML & Editable PPTX)**:
-   - Must run Python scripts to automatically export three distinct deliverables:
-     - 📊 **Excel Sheet (.xlsx)**: Full candidate pool and scoring table.
-     - 🌐 **Interactive HTML Report (.html)**: Modern responsive web page (dark/light themes, micro-interactive cards).
-     - 📑 **Editable PowerPoint Presentation (.pptx)**: Native editable slides generated via `python-pptx`.
-   - Provide clickable file links (e.g., `[View HTML Report in Browser](file:///path/to/report.html)`).
-3. **`uv` Portable Environment Requirement**:
-   - All Python invocations MUST use `uv` (`uv run python ...` or `uv run --with ...`). Global `pip install` is strictly prohibited.
-4. **Zero Hallucination Web Search Protocol**:
-   - Explicitly call `search_web` to verify every single URL. Never guess or hallucinate links.
-5. **Clickable Inline Citations**:
-   - Inline citations MUST be formatted as clickable markdown links: `[[1]](https://exact-url.com)`.
-6. **NO Rankings & NO Total Scores**:
-   - Qualitative scores (1-5) MUST NOT be summed up into a Total Score column. No candidate rankings.
-7. **Top 10 Core Domain Factors Breakdown**:
-   - Write at least one full paragraph of detailed explanation for EACH of ~10 core domain factors.
+### Host Capability Mapping
+- **[User Authorization Interface]**: Abstract user prompt/modal/question interface provided by the host system.
+- **[Isolated Sandbox Capability]**: Abstract isolated worker/subagent/terminal/sandbox capability provided by the host system.
+- **[Web Search & Retrieval]**: Abstract web search and URL content fetching tools.
 
 ---
 
-## Workflow Phases
+## 2. MetaScout Tool Orchestration & 5-Step Security Protocols
 
-### Phase 0: Capability Audit & MetaScout Tool Setup
-Audit task requirements (data extraction, HTML/PPTX generation). If missing tools, invoke `ask_question` for authorization and run via `uv`.
+When discovering capability gaps (e.g. missing parsers, data models, or export tools like `python-pptx`, `pandas`, `openpyxl`, `jinja2`), the AI MUST follow these 5 security workflows:
+
+### 2.1 Capability Audit
+- Audit task requirements against current environment capabilities.
+- Identify exact capability gaps (e.g., `Requires python-pptx for editable PPTX slide generation`).
+
+### 2.2 Approval & Permission Audit Protocol
+- BEFORE installing or invoking new tools/libraries, **MUST submit a permission request via [User Authorization Interface]**.
+- **The request MUST explicitly declare**:
+  1. Package/tool name and origin (PyPI, GitHub, etc.).
+  2. Rationale for introduction (Capability Gap).
+  3. Scope of permissions required (e.g., local venv execution, no unauthorized network activity).
+- **Silent/unauthorized installations are strictly prohibited.**
+
+### 2.3 Isolated Sandbox Deployment via `uv`
+- Upon user approval, deploy tools in an [Isolated Sandbox Capability] environment.
+- **Enforce `uv` portable execution** (e.g., `uv run python script.py` or `uv run --with <package> python script.py`).
+- Global `pip install` is prohibited to prevent host environment pollution.
+
+### 2.4 Execution & Dynamic Rollback Protocol
+- Execute the research task using newly acquired tools.
+- **Exception & Rollback Handling**: If execution fails or dependency conflicts occur, capture full logs and trigger an automatic rollback:
+  - Clean up failed build artifacts.
+  - Gracefully fallback to standard Markdown and basic Excel export, logging the rationale transparently in the final report without faking outputs.
+
+### 2.5 Tool Retention & Housekeeping Protocol
+- Upon completion, perform housekeeping according to user preferences and workspace rules:
+  - **Ephemeral Tools**: Clean up temporary virtual environments and build caches.
+  - **Persistent Tools**: Register dependencies in workspace configuration (e.g., `pyproject.toml`) for auditability.
+
+---
+
+## 3. Strict Rules
+
+### 3.1 Zero Hallucination Web Search Protocol
+- Explicitly call web search tools to verify every single URL. Never guess or hallucinate links from parametric memory.
+
+### 3.2 Clickable Inline Citations
+- Inline citations MUST be clickable Markdown links: `[[1]](https://exact-url.com)`.
+
+### 3.3 NO Rankings & NO Total Scores
+- Pure decision support. Qualitative scores (1-5) MUST NOT be summed up into a Total Score column. Replace recommendations with objective **Trade-off Analysis**.
+
+### 3.4 Top 10 Core Domain Factors Breakdown
+- Write at least one full paragraph of detailed explanation for EACH of ~10 core domain factors.
+
+### 3.5 Multi-Format Report Deliverables (Excel, HTML & Editable PPTX)
+- Must run Python scripts via `uv` to deliver:
+  1. 📊 **Excel Sheet (.xlsx)**: Full candidate pool and scoring table.
+  2. 🌐 **Interactive HTML Report (.html)**: Modern responsive dark-mode web page.
+  3. 📑 **Editable PowerPoint Presentation (.pptx)**: Native editable slides generated via `python-pptx`.
+
+---
+
+## 4. Workflow Phases
+
+### Phase 0: Capability Audit & MetaScout Approval Setup
+Audit requirements; request user approval via **2.2 Approval Protocol**; deploy via `uv`.
 
 ### Phase 1: Research Scope, Source Discovery & Parameter Locking
-Extract Hard Constraints; search reliable sources; **Call `ask_question`** to confirm parameters with user.
+Extract constraints; search reliable sources; **Invoke [User Authorization Interface]** to lock parameters.
 
 ### Phase 2: Candidate Scanning, 10 Core Factors & Multi-Format Export
-Scan candidate pool; detail 10 Core Factors; **Run `uv run python scripts/generate_report.py`** to produce `.xlsx`, `.html`, and `.pptx` files.
+Detail 10 Core Factors; scan candidate pool; **Run `uv run python scripts/generate_report.py`** to produce `.xlsx`, `.html`, and `.pptx` files. Trigger **2.4 Dynamic Rollback Protocol** if errors occur.
 
 ### Phase 3: Targeted Deep-Dive & Live Web Extraction
-Perform targeted `search_web` and `read_url_content`; write Deep-Dive cards.
+Perform targeted search and content extraction; write Deep-Dive cards.
 
 ### Phase 4: Option Matrix & Transparent Scoring (No Totals)
 Build Option Matrix and qualitative 1-5 Scoring Matrix (No Total Score column).
 
-### Phase 5: Trade-off Analysis & Multi-Format Deliverables
-Deliver objective Trade-off Analysis; provide direct file links to `.xlsx`, `.html`, and `.pptx` deliverables; append Numbered References List.
+### Phase 5: Trade-off Analysis & Housekeeping
+Deliver Trade-off Analysis; provide clickable file links to `.xlsx`, `.html`, and `.pptx` deliverables; execute **2.5 Housekeeping Protocol** and append verified reference list.

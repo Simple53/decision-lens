@@ -1,0 +1,28 @@
+{
+  "name": "decision-lens",
+  "version": "1.4.0",
+  "description": "Deep domain research, evidence-based trade-off analysis, host-agnostic dynamic tool discovery, multi-format (Excel, HTML, PPTX) report generation, and uv portable environment execution.",
+  "author": "Simple53",
+  "license": "MIT",
+  "repository": "https://github.com/Simple53/decision-lens",
+  "skills": [
+    {
+      "name": "decision-lens",
+      "path": "SKILL.md",
+      "description": "Host-agnostic domain research, trade-off analysis, dynamic tool discovery, and multi-format report generation (English)."
+    },
+    {
+      "name": "decision-lens-zh",
+      "path": "zh/SKILL.md",
+      "description": "宿主无关的深度领域研究、情境权衡分析、动态工具发现与多格式报告生成 (中文版)。"
+    }
+  ],
+  "compatibility": [
+    "Codex",
+    "Claude Code",
+    "OpenCode",
+    "Grok Build",
+    "Antigravity",
+    "AGY"
+  ]
+}
